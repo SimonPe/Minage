@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>KristaMine</title>
+    <style>
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 5px); }
+            50% { transform: translate(5px, -5px); }
+            75% { transform: translate(-5px, 5px); }
+            100% { transform: translate(5px, -5px); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+    </header>
+    <main>
+        <div class="image-container">
+            <img id="image" src="001_00.png" alt="Image 001_00" onclick="handleImageClick()">
+        </div>
+    </main>
+    <footer>
+    </footer>
+
+    <script>
+        const weightedImages = [
+            { src: "001_00.png", weight: 15.5 },
+            { src: "001_01.png", weight: 12.5 },
+            { src: "001_03.png", weight: 12.5 },
+            { src: "001_05.png", weight: 12.5 },
+            { src: "003-terre.png", weight: 12.5 },
+            { src: "004.png", weight: 12.5 },
+            { src: "012-sable.png", weight: 12.5 },
+            { src: "013.png", weight: 12.5 },
+            { src: "020-verre.png", weight: 5 },
+            { src: "049-obsidienne.png", weight: 2 },
+            { src: "ore_coal.png", weight: 5.5 },
+            { src: "ore_diamond.png", weight: 2 },
+            { src: "ore_iron.png", weight: 4 },
+            { src: "ore_lapis_lazuli.png", weight: 5 },
+            { src: "ore_emerald.png", weight: 2 },
+            { src: "ore_redstone.png", weight: 5 }
+        ];
+
+        let clickCount = 0;
+
+        function handleImageClick() {
+            clickCount++;
+
+            if (clickCount >= 5) {
+                document.getElementById("image").style.display = "none";
+                setTimeout(() => {
+                    const totalWeight = weightedImages.reduce((acc, img) => acc + img.weight, 0);
+                    const randomNum = Math.random() * totalWeight;
+                    let cumulativeWeight = 0;
+                    let chosenImage;
+
+                    for (const img of weightedImages) {
+                        cumulativeWeight += img.weight;
+                        if (randomNum <= cumulativeWeight) {
+                            chosenImage = img.src;
+                            break;
+                        }
+                    }
+
+                    document.getElementById("image").src = chosenImage;
+                    document.getElementById("image").style.display = "block";
+                }, 500);
+                clickCount = 0;
+            } else {
+                document.getElementById("image").classList.add("shake");
+                
+                setTimeout(() => {
+                    document.getElementById("image").classList.remove("shake");
+                }, 500);
+            }
+        }
+    </script>
+</body>
+</html>
